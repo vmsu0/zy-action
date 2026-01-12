@@ -355,6 +355,8 @@ runs:
         if compgen -G "*/kernel/kpm"; then
             echo -e "CONFIG_KPM=y\nCONFIG_KSU_MANUAL_HOOK=y\nCONFIG_KALLSYMS=y\nCONFIG_KALLSYMS_ALL=y" >> "$CONFIG_FILE"
             find . -type f -name super_access.c -exec sed -i '/DEFINE_MEMBER(task_struct, security)/d' {} +
+            sed -i 's/return false;/return;/g' drivers/kernelsu/ksud.c
+            sed -i '/memcpy(&fops_proxy/,/fput(file);/c\/* syscall-only build: file hook disabled */' drivers/kernelsu/ksud.c
         fi
 
         if [ "${{ inputs.zram }}" == "true" ]; then
