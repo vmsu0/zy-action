@@ -344,8 +344,9 @@ runs:
                 if grep -q "CONFIG_KPROBES=y" "$CONFIG_FILE" 2>/dev/null; then
                     echo "CONFIG_KPROBES is enabled, skip patch."
                 else
-                    opam init --disable-sandboxing --yes && eval $(opam env) && opam install --yes coccinelle
-                    curl -sSLf "https://github.com/dabao1955/kernel_build_action/raw/main/kernelsu/apply_cocci.sh" -o /tmp/patch.sh && bash /tmp/patch.sh && rm -f /tmp/patch.sh
+                    #opam init --disable-sandboxing --yes && eval $(opam env) && opam install --yes coccinelle
+                    curl -sSLf "https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/mainline/Patches/backport_patches.sh" -o /tmp/patch.sh && bash /tmp/patch.sh && rm -f /tmp/patch.sh
+                    curl -sSLf "https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/mainline/Patches/syscall_hook_patches.sh" -o /tmp/patch.sh && bash /tmp/patch.sh && rm -f /tmp/patch.sh
                 fi
             fi
             echo "::endgroup::"
