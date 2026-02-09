@@ -29,9 +29,9 @@ jobs:
           aosp-clang-version: r416183b
           #extra-cmd: KCFLAGS="-std=gnu99"
           ksu: true
-          ksu-version: legacy
+          ksu-version: main
           ksu-other: true
-          ksu-url: https://github.com/KernelSU-Next/KernelSU-Next
+          ksu-url: https://github.com/ReSukiSU/ReSukiSU
           lxc: true
           lxc-patch: true
           nethunter: true
