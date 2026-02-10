@@ -347,7 +347,7 @@ runs:
         fi
 
         if [ "${{ inputs.kpm }}" == "true" ]; then
-            echo -e "CONFIG_KPM=y\nCONFIG_KSU_MANUAL_HOOK=y\nCONFIG_KALLSYMS=y\nCONFIG_KALLSYMS_ALL=y" >> "$CONFIG_FILE"
+            echo -e "CONFIG_KPM=y\nCONFIG_KALLSYMS=y\nCONFIG_KALLSYMS_ALL=y" >> "$CONFIG_FILE"
             find . -type f -name super_access.c -exec sed -i '/DEFINE_MEMBER(task_struct, security)/d' {} +
             sed -i '/\/\* Do nothing \*\//,+2d' drivers/kernelsu/ksud.c
             sed -i 's/^skip:[[:space:]]*$/skip:\n\tfput(file);\n#endif/' drivers/kernelsu/ksud.c
