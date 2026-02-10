@@ -340,7 +340,7 @@ runs:
                     echo "CONFIG_KPROBES is enabled, skip patch."
                 else
                     #opam init --disable-sandboxing --yes && eval $(opam env) && opam install --yes coccinelle
-                    curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/rs.patch" -o rs.patch && git apply rs.patch && rm -f rs.patch
+                    #curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/rs.patch" -o rs.patch && git apply rs.patch && rm -f rs.patch
                 fi
             fi
             echo "::endgroup::"
