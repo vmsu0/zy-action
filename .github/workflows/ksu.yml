@@ -39,4 +39,6 @@ jobs:
           bbrplus: true
           zram: true
           bbg: true
+          kpm: true
+          rekernel: true
           anykernel3: true
