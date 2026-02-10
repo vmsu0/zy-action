@@ -326,7 +326,7 @@ runs:
                 fi
                 curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s "$KVER"
             fi
-            grep -q "CONFIG_KSU=y" "$CONFIG_FILE" || echo "CONFIG_KSU=y" >> "$CONFIG_FILE"
+            grep -q "CONFIG_KSU=y" "$CONFIG_FILE" || echo -e "CONFIG_KSU=y\nCONFIG_KSU_MANUAL_HOOK=y" >> "$CONFIG_FILE"
             grep -q "kernelsu" drivers/Makefile || printf "\nobj-\$(CONFIG_KSU) += kernelsu/\n" >> drivers/Makefile
             grep -q "source \"drivers/kernelsu/Kconfig\"" drivers/Kconfig || sed -i '/endmenu/i\source \"drivers/kernelsu/Kconfig\"' drivers/Kconfig
             if [ "${{ inputs.ksu-lkm }}" == "true" ]; then
@@ -340,14 +340,13 @@ runs:
                     echo "CONFIG_KPROBES is enabled, skip patch."
                 else
                     #opam init --disable-sandboxing --yes && eval $(opam env) && opam install --yes coccinelle
-                    curl -sSLf "https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/mainline/Patches/backport_patches.sh" -o /tmp/patch.sh && bash /tmp/patch.sh && rm -f /tmp/patch.sh
-                    curl -sSLf "https://raw.githubusercontent.com/JackA1ltman/NonGKI_Kernel_Build_2nd/mainline/Patches/syscall_hook_patches.sh" -o /tmp/patch.sh && bash /tmp/patch.sh && rm -f /tmp/patch.sh
+                    curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/rs.patch" -o rs.patch && git apply rs.patch && rm -f rs.patch
                 fi
             fi
             echo "::endgroup::"
         fi
 
-        if [ "${{ inputs.kvm }}" == "true" ]; then
+        if [ "${{ inputs.kpm }}" == "true" ]; then
             echo -e "CONFIG_KPM=y\nCONFIG_KSU_MANUAL_HOOK=y\nCONFIG_KALLSYMS=y\nCONFIG_KALLSYMS_ALL=y" >> "$CONFIG_FILE"
             find . -type f -name super_access.c -exec sed -i '/DEFINE_MEMBER(task_struct, security)/d' {} +
             sed -i '/\/\* Do nothing \*\//,+2d' drivers/kernelsu/ksud.c
@@ -378,7 +377,8 @@ runs:
 
         if [ "${{ inputs.rekernel }}" == "true" ]; then
             echo "::group::Initializing Re-Kernel"
-            curl -sSLf "https://github.com/dabao1955/kernel_build_action/raw/main/rekernel/patch.sh" -o /tmp/re.sh && bash /tmp/re.sh && rm -f /tmp/re.sh
+            curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/re.sh" -o re.sh && bash re.sh && rm -f re.sh
+            curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/re.patch" -o re.patch && git apply re.patch && rm -f re.patch
             echo "::endgroup::"
         fi
 
@@ -506,7 +506,7 @@ runs:
 
         unset CMD_PATH CMD_CC CMD_CLANG_TRIPLE CMD_CROSS_COMPILE CMD_CROSS_COMPILE_ARM32 USE_CCACHE CLANG_PATH HOMES KVER SWAP_FILE SUBLEVEL PATCHLEVEL VERSION GCC_DIR FILE FILE_NAME MATCHED_DIR FOLDER FOLDER_NAME GCC64 GCC32 NEED_GCC AOSP_CLANG_URL OTHER_CLANG_URL AOSP_GCC64_URL AOSP_GCC32_URL AOSP_GCC_BRANCH OTHER_GCC64_URL OTHER_GCC32_URL make_args
 
-        if [ "${{ inputs.kvm }}" == "true" ]; then
+        if [ "${{ inputs.kpm }}" == "true" ]; then
             echo "::group:: Patch KernelSU KPM"
             cd out/arch/${{ inputs.arch }}/boot
             aria2c https://raw.githubusercontent.com/ShirkNeko/SukiSU_patch/refs/heads/main/kpm/patch_linux -o patch
