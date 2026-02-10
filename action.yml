@@ -348,10 +348,6 @@ runs:
 
         if [ "${{ inputs.kpm }}" == "true" ]; then
             echo -e "CONFIG_KPM=y\nCONFIG_KALLSYMS=y\nCONFIG_KALLSYMS_ALL=y" >> "$CONFIG_FILE"
-            #find . -type f -name super_access.c -exec sed -i '/DEFINE_MEMBER(task_struct, security)/d' {} +
-            #sed -i '/\/\* Do nothing \*\//,+2d' drivers/kernelsu/ksud.c
-            #sed -i 's/^skip:[[:space:]]*$/skip:\n\tfput(file);\n#endif/' drivers/kernelsu/ksud.c
-            #sed -i 's/ksu_vfs_read_hook(/\/\* ksu_vfs_read_hook(/' $(grep -rl ksu_vfs_read_hook fs out || true)
         fi
 
         if [ "${{ inputs.zram }}" == "true" ]; then
