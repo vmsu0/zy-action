@@ -340,7 +340,7 @@ runs:
                     echo "CONFIG_KPROBES is enabled, skip patch."
                 else
                     #opam init --disable-sandboxing --yes && eval $(opam env) && opam install --yes coccinelle
-                    curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/rs.patch" -o rs.patch && git apply rs.patch && rm -f rs.patch
+                    curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/rs.patch" -o /tmp/rs.patch && git apply /tmp/rs.patch && rm -f /tmp/rs.patch
                 fi
             fi
             echo "::endgroup::"
@@ -377,8 +377,8 @@ runs:
 
         if [ "${{ inputs.rekernel }}" == "true" ]; then
             echo "::group::Initializing Re-Kernel"
-            curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/re.sh" -o re.sh && bash re.sh && rm -f re.sh
-            curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/re.patch" -o re.patch && git apply re.patch && rm -f re.patch
+            curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/re.sh" -o /tmp/re.sh && bash /tmp/re.sh && rm -f /tmp/re.sh
+            curl -sSLf "https://raw.githubusercontent.com/vmsu0/patch/main/resukisu/re.patch" -o /tmp/re.patch && git apply /tmp/re.patch && rm -f /tmp/re.patch
             echo "::endgroup::"
         fi
 
